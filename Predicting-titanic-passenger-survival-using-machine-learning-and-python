@@ -1,0 +1,62 @@
+# Titanic Passenger Survival Prediction
+# Machine Learning Project in Python
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+# Load data
+train_df = pd.read_csv("train.csv")  # Use your actual path or dataset
+
+# Data Exploration
+print(train_df.head())
+print(train_df.info())
+print(train_df.isnull().sum())
+
+# Data Preprocessing
+# Fill missing values
+train_df['Age'].fillna(train_df['Age'].median(), inplace=True)
+train_df['Embarked'].fillna(train_df['Embarked'].mode()[0], inplace=True)
+train_df['Fare'].fillna(train_df['Fare'].median(), inplace=True)
+
+# Drop columns that are less useful
+train_df.drop(['Cabin', 'Ticket', 'Name', 'PassengerId'], axis=1, inplace=True)
+
+# Convert categorical variables to numeric
+train_df['Sex'] = train_df['Sex'].map({'male': 0, 'female': 1})
+train_df = pd.get_dummies(train_df, columns=['Embarked'])
+
+# Features and target
+X = train_df.drop('Survived', axis=1)
+y = train_df['Survived']
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Model training
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+# Prediction
+y_pred = model.predict(X_test)
+
+# Evaluation
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
+print("Classification Report:\n", classification_report(y_test, y_pred))
+
+# Feature importance plot
+importances = model.feature_importances_
+feat_names = X.columns
+indices = np.argsort(importances)[::-1]
+plt.figure(figsize=(10,6))
+plt.title("Feature Importances")
+plt.bar(range(X.shape[1]), importances[indices], align="center")
+plt.xticks(range(X.shape[1]), feat_names[indices], rotation=90)
+plt.tight_layout()
+plt.show()
+
+Complete Titanic passenger survival project with data cleaning and model training
