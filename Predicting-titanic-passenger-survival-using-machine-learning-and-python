@@ -1,5 +1,4 @@
-# Titanic Passenger Survival Prediction
-# Machine Learning Project in Python
+# Titanic Passenger Survival Prediction using Machine Learning Project in Python
 
 import pandas as pd
 import numpy as np
