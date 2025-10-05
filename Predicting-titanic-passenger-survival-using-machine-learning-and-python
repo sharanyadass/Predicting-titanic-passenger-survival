@@ -8,7 +8,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
 # Load data
-train_df = pd.read_csv("train.csv")  # Use your actual path or dataset
+train_df = pd.read_csv("train.csv")  
 
 # Data Exploration
 print(train_df.head())
